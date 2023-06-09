@@ -71,7 +71,6 @@
           .querySelector(".ui.form")
           .onsubmit = function (event) {
             event.preventDefault();
-            console.log(event)
             itemFeed = `
               <li class="event" id="${generateRandomChars(5)}">
                   <div class="content">
@@ -104,7 +103,6 @@
               feedContainer.innerHTML += itemFeed;
               descriptionInput.value = "";
               //this.reset();
-
             };
 
             function checkListCompleteItemFeed(btnComplete){
@@ -163,10 +161,8 @@
                   }
                 }
               }
-
             }
-
-
+        
       </script>
     </div> 
 

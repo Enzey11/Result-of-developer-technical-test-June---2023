@@ -1,0 +1,41 @@
+@import "animatedText.scss";
+
+div.todoApp{
+    position: relative;
+    top:5rem;
+    display: grid;
+    h4.title{
+        justify-content: center;
+        display: grid;
+
+    }
+}
+
+ul.ui.feed{
+    li.event{
+        margin: 1.5rem 0 !important;
+        div.summary{
+            span.ui.label{
+                transition: ease-in .9s all !important;
+                margin-left: 5px !important;
+            }
+        }
+        div.content{
+            div.date{
+                display: '';
+            }
+        }
+    }
+    &.addEventList{
+        li.event{
+            opacity:1;
+            transition: ease-in .2s all;
+            div.content{
+                div.date{
+                    display: '';
+                }
+            }
+        }
+    }
+}
+

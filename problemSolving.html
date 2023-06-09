@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+// find min max value inside of array
+document.body.innerText += " Problem Solving 1.1 : \n"
+function minMaxSum(numArray=[]) {
+    numArray.sort((a, b) => a - b);
+  const minSum = numArray.slice(0, 4).reduce((acc, curr) => acc + curr, 0),
+        maxSum = numArray.slice(-4).reduce((acc, curr) => acc + curr, 0);
+  document.body.innerText +=  `The array values are = ${numArray} \n Min value in the array's ${minSum} \n Max value in array's ${maxSum}`
+}
+
+minMaxSum([1,2,3,4,5,6])
+
+
+document.body.innerText += " \n ================================================= \n"
+
+document.body.innerText += " Problem Solving 1.2 : \n"
+
+function calculateMinMaxSum(input) {
+  const arr = input.split(',').map(Number);
+  arr.sort((a, b) => a - b);
+  const minSum = arr.slice(0, 4).reduce((acc, curr) => acc + curr, 0),
+        maxSum = arr.slice(1).reduce((acc, curr) => acc + curr, 0);
+  document.body.innerText +=  `The input values are = ${input} \n Min value in the array's ${minSum} \n Max value in array's ${maxSum}`
+}
+
+// Example usage
+calculateMinMaxSum('1,2,3,4,5');
+
+document.body.innerText += "\n ================================================= \n"
+
+document.body.innerText += " Problem Solving 1.3 : "
+
+function sumExcept(num = "") {
+  let sum = BigInt(0);
+  let equation = '';
+
+  for (let i = 1; i <= 5; i++) {
+    if (i !== num) {
+      sum += BigInt(i);
+      equation += `${i} + `;
+    }
+  }
+
+  equation = equation.slice(0, -3);
+
+  return `\n Sum everythin' except ${num} : ${equation} = ${sum.toString()} `;
+
+}
+
+let sumsXceptTheParam = [
+                          sumExcept(1),
+                          sumExcept(2),
+                          sumExcept(3),
+                          sumExcept(4),
+                          sumExcept(5),
+                        ]
+document.body.innerText += ` ${sumsXceptTheParam}`
+
+document.body.innerText += "\n ================================================= \n"
+
+document.body.innerText += " Problem Solving 2. : "
+
+function plusMinus(numerics) {
+  const numsLength = numerics.length;
+  let positiveCount = 0,
+      negativeCount = 0,
+      zeroCount = 0;
+
+  for (let i = 0; i < numsLength; i++) {
+    if (numerics[i] > 0) {
+      positiveCount++;
+    } else if (numerics[i] < 0) {
+      negativeCount++;
+    } else {
+      zeroCount++;
+    }
+  }
+
+  const positiveRatio = (positiveCount / numsLength).toFixed(6),
+        negativeRatio = (negativeCount / numsLength).toFixed(6),
+        zeroRatio     = (zeroCount / numsLength).toFixed(6);
+  return document.body.innerText += `\n Numerics of array values're : ${numerics} \n result : \n ${positiveRatio} \n ${negativeRatio} \n ${zeroRatio} `
+}
+
+plusMinus([1, 1, 0, -1, -1]);
+
+// usage of input format
+const sizeArr = parseInt(prompt("Enter the size of the array:"));
+const insert = prompt("Enter space-separated integers:").split(" ");
+const numericsArray = insert.map(Number);
+
+plusMinus(insert);
+
+document.body.innerText += "\n ================================================= \n"
+document.body.innerText += " Problem Solving 3 . : \n"
+
+function timeConversion(stringTime = "") {
+  const [time, indicator] = stringTime.split(' ');
+  const [hours, minutes, seconds] = time.split(':');
+  let militaryHours = parseInt(hours);
+  if (indicator === 'PM' && militaryHours !== 12) {
+    militaryHours += 12;
+  } else if (indicator === 'AM' && militaryHours === 12) {
+    militaryHours = 0;
+  }
+  const militaryHoursStr = militaryHours.toString().padStart(2, '0'),
+        militaryTime = `${militaryHoursStr}:${minutes}:${seconds}`;
+  return document.body.innerText += `12 H Format from ${time} is ${militaryTime} in 24h format / millitary format`;
+}
+
+timeConversion('07:05:45 PM');
+
+
+	</script>
+</body>
+</html>

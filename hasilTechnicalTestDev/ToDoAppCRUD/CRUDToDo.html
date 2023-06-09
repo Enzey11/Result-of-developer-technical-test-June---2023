@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/todoApp.css" />
+    <link rel="stylesheet" href="./fomanticUI/dist/semantic.css" />
+    <script src="./fomanticUI/dist/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="ui container todoApp">
+      <h4 class="title">ToDo List App</h4>
+      <form action="" class="ui form">
+        <div class="field">
+          <label for="planInput">Plan</label>
+          <input
+            type="text"
+            name="plan"
+            id="planInput"
+            placeholder="What's on ya mind?"
+          />
+        </div>
+        <div class="field">
+          <label for="descriptionInput">Description</label>
+          <textarea
+            required
+            type="text"
+            name="description"
+            id="descriptionInput"
+            placeholder="Description"
+            cols="30" rows="10"
+          ></textarea>
+        </div>
+        <input type="hidden" name="" id="itemFeedId" value="">
+        <div class="field" id="formActions">
+          <button type="submit" id="addPlan" class="ui small button">Put on List</button>
+        </div>
+      </form>
+
+      <div class="ui container">
+        <h4 class="ui horizontal divider">
+          <span class="actionList">List of Action</span>
+        </h4>
+
+        <ul class="ui feed"></ul>
+      </div>
+
+      <script>
+        // flexible way creating CRUD by implementin' event attribute to prevent malfunction;
+        // these vars will be used inside the funcs insert/edit
+        let feedContainer = document.querySelector(".ui.feed"),
+            itemFeed = "",
+            dateTime = new Date(),
+            planInput = document.getElementById("planInput"),
+            descriptionInput = document.getElementById("descriptionInput"),
+            itemFeedIdInput  = document.getElementById('itemFeedId');
+
+        function generateRandomChars(length) {
+          let result = "";
+          const characters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+";
+          for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            result += characters.charAt(randomIndex);
+          }
+          return result;
+        }
+
+        document
+          .querySelector(".ui.form")
+          .onsubmit = function (event) {
+            event.preventDefault();
+            console.log(event)
+            itemFeed = `
+              <li class="event" id="${generateRandomChars(5)}">
+                  <div class="content">
+                    <div class="summary">
+                      <a class="user">
+                        ${planInput.value.trim().replace(/>/g, '&gt;').replace(/</g, '&lt;')}
+                      </a> 
+                      <div class="date">
+                        Listed at ${dateTime.toLocaleString()}
+                      </div>
+                    </div>
+                    <div class="extra text">
+                      ${descriptionInput.value.trim().replace(/>/g, '&gt;').replace(/</g, '&lt;')}
+                    </div>
+                    <div class="meta" id="actionEventItem">
+                      <a class="edit" onclick="editItemFeed(this)">
+                        <i class="edit icon"></i> edit
+                      </a>
+                      <a class="delete" onclick="deleteItemFeed(this)">
+                        <i class="delete icon"></i> delete
+                      </a>
+                      <a class="complete" onclick="checkListCompleteItemFeed(this)">
+                          <i class="tasks icon"></i> 
+                          Mark as complete 
+                      </a>
+                    </div>
+                  </div>
+                </li>`;
+            
+              feedContainer.innerHTML += itemFeed;
+              descriptionInput.value = "";
+              //this.reset();
+
+            };
+
+            function checkListCompleteItemFeed(btnComplete){
+              const labelCompleted = document.createElement('span');
+                    labelCompleted.className = 'ui label tiny green';
+                    labelCompleted.textContent = 'Completed';
+              const completedLabel = document.querySelector('.ui.label.tiny.green')
+              let feedUserInfo = btnComplete.parentNode.parentNode.parentNode.querySelector('div.summary');
+              if(feedUserInfo.querySelector('.ui.label.tiny.green') === null){
+                feedUserInfo.appendChild(labelCompleted)
+                btnComplete.innerText = 'Mark as incomplete'
+
+              }else{
+                feedUserInfo.removeChild(feedUserInfo.querySelector('div.summary span.ui.label'))
+                btnComplete.innerText = 'Mark as complete'
+                console.log(btnComplete)
+              }
+            }
+
+            function deleteItemFeed(btnDelete){
+              let btnEditPlan = document.getElementById('editPlan')
+              // directly accessing element id wihtout grab them from the dom
+              itemFeedIdInput.value = '';
+              btnDelete.parentNode.parentNode.parentNode.remove();
+              if(btnEditPlan !== null){
+                formActions.removeChild(btnEditPlan); 
+              }
+            }
+
+            function editItemFeed(btnEdit, changeItem = false){
+              let itemFeedIdInput = document.getElementById('itemFeedId');
+              if(!changeItem){
+                let buttonEdit  = `<a id='editPlan' onclick='editItemFeed(this,true)' class='ui small button'> Edit Plan </a>`; 
+                let formActions = document.getElementById('formActions'),
+                    btnEditPlan = document.getElementById('editPlan'),
+                    itemFeedId  = btnEdit.closest('.event').id,
+                    divContent  = btnEdit.closest('.content'),
+                    planName    = divContent.querySelector('div.summary a.user').innerText,
+                    descriptionText  = divContent.querySelector('div.extra.text').innerText;
+                planInput.value  = planName;
+                descriptionInput.value = descriptionText
+                itemFeedIdInput.value  = itemFeedId;
+                if (btnEditPlan === null){
+                  formActions.innerHTML += buttonEdit;
+                }
+              }else{
+                if(!itemFeedIdInput.value){
+                  alert("id not found")
+                }else{
+                  let itemFeed = document.getElementById(itemFeedIdInput.value) ;
+                  if(itemFeed !== null){
+                     itemFeed.querySelector("a.user").innerText = planInput.value;
+                     itemFeed.querySelector("div.extra.text").innerText =   descriptionInput.value 
+                  }else{
+                    alert('item feed not found');
+                  }
+                }
+              }
+
+            }
+
+
+      </script>
+    </div> 
+
+  </body>
+</html>
